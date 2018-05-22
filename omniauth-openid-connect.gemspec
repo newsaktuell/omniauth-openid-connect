@@ -19,6 +19,33 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ['lib']
+
+=begin
+  このパッケージは, これらと同時に使われるのが考えられる;
+    - omniauth-facebook
+    - omniauth-paypal-oauth2   # omniauth-paypal は古い.
+      https://rubygems.org/gems/omniauth-paypal-oauth2/
+
+    omniauth-facebook (4.0.0)
+      omniauth-oauth2 (~> 1.2)
+    omniauth-oauth2 (1.4.0)
+      oauth2 (~> 1.0)
+      omniauth (~> 1.2)
+    openid_connect (1.1.3)
+      activemodel
+      attr_required (>= 1.0.0)
+      json (>= 1.4.3)
+      json-jwt (>= 1.5.0)
+      rack-oauth2 (>= 1.6.1)
+      swd (>= 1.0.0)
+      tzinfo
+      validate_email
+      validate_url
+      webfinger (>= 1.0.1)
+    omniauth (1.6.1)
+      hashie (>= 3.4.6, < 3.6.0)
+      rack (>= 1.6.2, < 3)
+=end
   
   # symbolize_keys() 
   spec.add_dependency 'activesupport', '>= 4.2' 
@@ -32,7 +59,7 @@ Gem::Specification.new do |spec|
   
   # jwt 2.0.0 が出ているが, oauth2 1.4.0 depends on jwt ~> 1.0
   # 'jwt' と 'json-jwt' があるが, 'jwt' が多数派.
-  spec.add_dependency 'jwt', '~> 2.1.0'
+  spec.add_dependency 'jwt', '~> 1.5'
 
   spec.add_development_dependency "bundler", "~> 1.5"
   # Ruby 2.2からバンドルされる. gem依存不要

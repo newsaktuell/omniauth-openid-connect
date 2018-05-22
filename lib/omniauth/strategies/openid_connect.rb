@@ -346,7 +346,7 @@ module OmniAuth
 
         # 鍵を選ぶ。"{ヘッダ部}.{ペイロード部}.{シグネチャ部}" と、ピリオドで
         # 区切られている。ヘッダ部にアルゴリズムが書かれている.
-        header = ::JWT.decode(actoken.id_token, false)[0]
+        header = ::JWT.decoded_segments(actoken.id_token, false)[0]
         key = key_or_secret header
 
         # このなかで署名の検証も行う. => JSON::JWS::VerificationFailed
