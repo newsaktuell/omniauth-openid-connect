@@ -175,7 +175,7 @@ module OmniAuth
       #
       # http://openid.net/specs/openid-connect-discovery-1_0.html
       def config
-        OmniAuth::OpenIDConnect::Configuration.instance.config(issuer)
+        ::OpenIDConnect::Discovery::Provider::Config.discover!(issuer)
       end
 
 
@@ -224,8 +224,7 @@ module OmniAuth
         error = request.params['error_reason'] || request.params['error']
         if error
           raise CallbackError.new(request.params['error'],
-                                  request.params['error_description'] ||
-                                    request.params['error_reason'],
+                                  request.params['error_description'] || request.params['error_reason'],
                                   request.params['error_uri'])
         end
         if session['omniauth.state'] &&
