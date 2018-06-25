@@ -267,8 +267,8 @@ module OmniAuth
           state: new_state,
           nonce: (new_nonce if options.send_nonce),
         }
-        %i[display prompt max_age acr_values hd ux].each do |key|
-          opts[key] = options.send(key)
+        %i[display max_age acr_values hd ux].each do |key|
+          opts[key] = options.fetch(key)
         end
 
         ['ui_locales', 'id_token_hint', 'login_hint', # OpenID Connect Core 1.0
