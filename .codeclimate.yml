@@ -1,0 +1,13 @@
+
+engines:
+  rubocop:
+    enabled: true
+    checks:
+      Rubocop/Layout/LeadingCommentSpace:
+        enabled: false
+
+plugins:
+  rubocop:
+    enabled: true
+
+
