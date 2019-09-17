@@ -12,4 +12,4 @@ end
 desc "Run tests"
 
 # 単に rake コマンドでテスト実行.
-task default: [:test]
+#task default: [:test]

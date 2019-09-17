@@ -1,10 +1,17 @@
 class StrategyTestCase < MiniTest::Test
+  # rack app
   class DummyApp
-    def call(env); end
+    def call(env)
+      [ 200,
+        { 'Content-Type' => 'text/plain' },
+        env.keys.sort.map {|k| "#{k} = #{env[k]}\n" }
+      ]
+    end
   end
 
-  attr_accessor :identifier, :secret
+  attr_reader :identifier, :secret
 
+  # @override
   def setup
     @identifier = '1234'
     @secret = '1234asdgat3'
@@ -31,6 +38,7 @@ class StrategyTestCase < MiniTest::Test
   end
 
   def request
+    # stub Rack::Request
     @request ||= stub('Request').tap do |request|
       request.stubs(:params).returns({})
       request.stubs(:cookies).returns({})
