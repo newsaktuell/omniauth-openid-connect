@@ -19,7 +19,7 @@ Gem::Specification.new do |spec|
   # v2.2 は 2018-03-31 EOL.
   # v2.3 は 2019-03-31 EOL.
   spec.required_ruby_version = '>= 2.4'
-  
+
   spec.files         = `git ls-files -z`.split("\x0")
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
@@ -51,15 +51,15 @@ Gem::Specification.new do |spec|
       hashie (>= 3.4.6, < 3.6.0)       < 3.7.0, >= 3.4.6
       rack (>= 1.6.2, < 3)             < 3, >= 1.6.2
 =end
-  
-  # symbolize_keys() 
-  spec.add_dependency 'activesupport', '>= 4.2' 
+
+  # symbolize_keys()
+  spec.add_dependency 'activesupport', '>= 4.2'
   spec.add_dependency 'omniauth', '~> 1.6'
   spec.add_dependency 'openid_connect', '~> 1.1'
 
   # A replacement for the URI implementation that is part of Ruby's standard
   # library.
-  # LICENSE: APACHE-2.0 
+  # LICENSE: APACHE-2.0
   #spec.add_dependency 'addressable', '~> 2.5'   # 実際には使っていない
 
   # 'jwt' と 'json-jwt' があるが, 'jwt' が多数派.
@@ -80,7 +80,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'guard-minitest'
 
   # Ruby 2.2からバンドルされる. gem依存不要
-  #spec.add_development_dependency 'minitest'
+  spec.add_development_dependency 'minitest'
   spec.add_development_dependency 'mocha'
 
   spec.add_development_dependency 'rake'

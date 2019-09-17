@@ -73,7 +73,7 @@ module OmniAuth
 
       ##############################
       # Authentication Request
-      
+
       # Authentication Request: [REQUIRED]
       # 'openid' は必須.
       # 加えて, OpenID Connect で定義: 'profile', 'email', 'address', 'phone',
@@ -112,14 +112,14 @@ module OmniAuth
       # Restrict user domain name.
       # See https://developers.google.com/identity/protocols/OpenIDConnect#hd-param
       option :hd, nil
-      
+
       # Authentication Request: [OPTIONAL]
       option :max_age
 
       # Authentication Request: [OPTIONAL]
       option :acr_values
 
-      # not option, but request.params 
+      # not option, but request.params
       #option :ui_locales
       #option :id_token_hint
       #option :login_hint
@@ -148,7 +148,7 @@ module OmniAuth
       option :uid_field, 'sub'
 
       option :post_logout_redirect_uri
-      
+
       # [Rack::OAuth2::AccessToken] アクセストークン
       attr_reader :access_token
 
@@ -226,7 +226,7 @@ module OmniAuth
       # request_phase() と callback_phase() の開始前に呼び出される.
       def setup_phase
         super
-        
+
         @issuer = if options.issuer
           options.issuer
         else
@@ -255,7 +255,7 @@ module OmniAuth
       # @override
       def request_phase
         #discover! ここで呼び出してはいけない. discovery: false対応.
-        
+
         # client() 内で client_options から OpenIDConnect::Client を構築.
         redirect client.authorization_uri(authorize_params)
       end
@@ -286,8 +286,10 @@ module OmniAuth
         super
       rescue OmniAuth::OpenIDConnect::MissingCodeError => e
         fail!(:missing_code, e)
-      rescue CallbackError, ::Rack::OAuth2::Client::Error => e
+      rescue CallbackError => e
         fail!(e.error, e)
+      rescue ::Rack::OAuth2::Client::Error => e
+        fail!(e.response[:error], e)
       rescue ::Timeout::Error, ::Errno::ETIMEDOUT => e
         fail!(:timeout, e)
       rescue ::SocketError => e
@@ -377,7 +379,7 @@ module OmniAuth
 
       def discover!
         raise "bug" if !options.discovery
-        
+
         # config() 内で, issuer を引数にして, 実際に discover! している.
         client_options.authorization_endpoint = config().authorization_endpoint
         client_options.token_endpoint = config().token_endpoint
@@ -399,19 +401,19 @@ module OmniAuth
         @user_info ||= access_token.userinfo!
       end
 
-      # Google sends the string "true" as the value for the field 
+      # Google sends the string "true" as the value for the field
       # 'email_verified' while a boolean is expected.
       def fix_user_info(user_info)
         raise TypeError if !user_info
-        
+
         if user_info.email_verified.is_a? String
-          user_info.email_verified = 
+          user_info.email_verified =
                             (user_info.email_verified.casecmp("true") == 0)
         end
         #user_info.gender = nil # in case someone picks something else than male or female, we don't need it anyway
         user_info
       end
-      
+
 
       # callback_phase() から呼び出される.
       # @return [Rack::OAuth2::AccessToken] アクセストークン
@@ -428,7 +430,7 @@ module OmniAuth
         # token_endpoint に対して http request を行う.
         # TODO: Implicit Flow では, id_token と同時にアクセストークンを得るた
         #       め, このコードを skip する必要がある.
-        
+
         # 仕様では grant_type, code, redirect_uri パラメータ
         opts = {
           scope: (options.scope if options.send_scope_to_token_endpoint),
@@ -449,7 +451,7 @@ module OmniAuth
         # TODO: 下の header で鍵を選ぶのではなく, 公開鍵決め打ちにしなければな
         #       らない.
         # /Implicit Flow
-        
+
         # 鍵を選ぶ。"{ヘッダ部}.{ペイロード部}.{シグネチャ部}" と、ピリオドで
         # 区切られている。ヘッダ部にアルゴリズムが書かれている.
         header = (JSON::JWS.decode_compact_serialized actoken.id_token, :skip_verification).header
@@ -509,7 +511,7 @@ module OmniAuth
       # RSAの場合は, 認証サーバの公開鍵を使う
       def key_or_secret header
         raise TypeError if !header
-        
+
         case header['alg'].to_sym
         when :HS256, :HS384, :HS512
           client_options.secret
@@ -523,7 +525,7 @@ module OmniAuth
         end
       end
 
-     
+
       def encoded_post_logout_redirect_uri
         return unless options.post_logout_redirect_uri
 
@@ -548,7 +550,7 @@ module OmniAuth
 
         def initialize(error, error_reason = nil, error_uri = nil)
           raise TypeError if !error
-          
+
           @error = error
           self.error_reason = error_reason
           self.error_uri = error_uri

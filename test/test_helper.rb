@@ -5,7 +5,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 require 'simplecov'
 require 'minitest/autorun'
-require 'mocha/minitest'
+require 'mocha/mini_test'
 require 'faker'
 require 'active_support'
 
